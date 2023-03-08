@@ -17,4 +17,4 @@ application/logs/*
 /vendor/
 /src/
 gulpfile.js
-!node_modules/*
+node_modules/*
