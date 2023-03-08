@@ -18,3 +18,4 @@ application/logs/*
 /src/
 gulpfile.js
 /node_modules/
+/dist/
