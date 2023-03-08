@@ -1,0 +1,12 @@
+{
+    "name": "dev/passakorn",
+    "authors": [
+        {
+            "name": "chanomkaimook",
+            "email": "75407180+chanomkaimook@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "picqer/php-barcode-generator": "^2.0"
+    }
+}

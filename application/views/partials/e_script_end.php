@@ -1,0 +1,1 @@
+<script src="<?= base_url('') ?>asset/js/app.min.js"></script>
