@@ -7,15 +7,9 @@ class Ctl_dashboard extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mdl_item');
-        $this->load->model('mdl_document');
-        $this->load->model('mdl_node');
-        $this->load->model('mdl_temp');
-        $this->load->model('mdl_stock');
-        $this->load->library(array('document'));
+        $this->load->model('mdl_bill');
 
         $this->middleware();
-
     }
 
     public function index()
@@ -25,105 +19,48 @@ class Ctl_dashboard extends MY_Controller
         $this->template->build('dashboard');
     }
 
-    public function get_data()
-    {
-        $this->load->helper('my_date');
-        $data = $this->mdl_document->get_dataShow();
-
-        $data_result = [];
-
-        if ($data) {
-            foreach ($data as $row) {
-                $sub_data = [];
-
-                $doc_alias_name = $this->document->get_documentAliasFromCode($row->DOC_TABLE_CODE);
-                $doc_table_name = $this->document->get_documentTableItemFromCode($row->DOC_TABLE_CODE);
-
-                if ($row->DATE_UPDATE) {
-                    $query_date = $row->DATE_UPDATE;
-                    $query_user = "(แก้) " . whois('id', $row->USER_UPDATE);
-                } else {
-                    $query_date = $row->DATE_STARTS;
-                    $query_user =  whois('id', $row->USER_STARTS);
-                }
-
-                $temp_datetime = toThaiDateTimeString($query_date, 'datetime');
-                $explode = explode(" ", $temp_datetime);
-                $time = $explode[3];
-
-                $datetime = toThaiDateTimeString($query_date, 'date') . "<p>" . $time . "</p>";
-
-                $datecut = $this->mdl_stock->find_dateCut(date('Y-m-d'));
-
-                //
-                // received
-                $received = null;
-                $received_text = $row->TOTAL;
-                $sql_rc = $this->db->select_sum('TOTAL')
-                    ->where('doc_table_item_id', $row->DOC_NODE_ID)
-                    ->where('status', 1)
-                    ->get('doc_node_item_list');
-                $r_rc = $sql_rc->row();
-                if ($r_rc->TOTAL) {
-                    $received = $r_rc->TOTAL;
-                    $received_text = $row->TOTAL . " ( " . $r_rc->TOTAL . "/" . $row->TOTAL . " )";
-                }
-
-                $sub_data['RECEIVED'] = $received;
-                $sub_data['DATECUT'] = $datecut;
-                $sub_data['ID'] = $row->ID;
-                $sub_data['CODE'] = $row->DOC_TABLE_CODE;
-                $sub_data['DOC_NODE_ID'] = $row->DOC_NODE_ID;
-                $sub_data['TABLE'] = $doc_table_name;
-                $sub_data['ITEM'] = $row->ITEM_NAME;
-                $sub_data['ITEM_ID'] = $row->ITEM_ID;
-                $sub_data['TOTAL'] = $received_text;
-                $sub_data['TOTAL_ONLY'] = intval($row->TOTAL);
-                $sub_data['TOTAL_RECEIVED_ONLY'] = intval($r_rc->TOTAL);
-                $sub_data['COMPLETE_ALIAS'] = $doc_alias_name;
-                $sub_data['NODE_NAME'] = $row->NODE_NAME;
-                $sub_data['REMARK'] = $row->REMARK;
-                $sub_data['CREATER'] = $query_user;
-                $sub_data['DATE_STARTS'] = array(
-                    "display"   => $datetime,
-                    "timestamp" => date('Y-m-d H:i:s', strtotime($query_date)),
-                    "date_starts" => date('Y-m-d H:i:s', strtotime($row->DATE_STARTS)),
-                );
-
-                $data_result[] = $sub_data;
-            }
-        }
-
-        $result = array(
-            "recordsTotal"      =>     count($data),
-            "recordsFiltered"   =>     count($data),
-            "data"              =>     $data_result
-        );
-
-        echo json_encode($result);
-    }
-
-    public function fetch_doc()
+    public function fetch_order()
     {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
 
             $optional = [];
-            $table = $this->input->post('table');
-            
-            if($table == 'doc_node_item'){
-                $optional = array(
-                    'doc_type'  => 'in',
-                    'complete'  => 1
-                );
+
+            if($this->input->post('hidden_datestart') && $this->input->post('hidden_dateend')){
+                $optional['booking_date >='] = $this->input->post('hidden_datestart');
+                $optional['booking_date <='] = $this->input->post('hidden_dateend');
+            }else{
+                $optional['booking_date'] = $this->input->post('hidden_datestart');
             }
 
-            $get_data = $this->mdl_document->get_dataTable('id', $table,$optional);
+            $total_order = 0;
+            $total_customer= 0;
+            $total_waite= 0;
 
-            $result = 0;
+            $get_data = $this->mdl_bill->get_data(null,$optional);
 
-            if($get_data){
-                $result = count($get_data);
+            $get_data_waite = $this->mdl_bill->get_dataShow_waite();
+
+            if ($get_data) {
+
+                $total_customer = 0;
+                $total_waite = 0;
+
+                foreach ($get_data as $row) {
+                    if ($row->TOTALS) {
+                        $total_customer += intval($row->TOTALS);
+                    }
+
+                    if ($row->PAYMENT_ID == 4) {     // 4=waite
+                        $total_waite++;
+                    }
+                }
             }
+
+            $result['total_order'] = count($get_data);
+            $result['total_customer'] = $total_customer;
+            $result['total_waite_today'] = $total_waite;
+            $result['total_waite'] = count($get_data_waite);
+
             echo json_encode($result);
         }
     }

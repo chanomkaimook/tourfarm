@@ -8,7 +8,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 //
 function toThaiDateTimeString($date, $typereturn)
 {
-  
+
   $thai_day_arr = array("อา", "จ", "อ", "พ", "พฤ", "ศ", "ส");
   $thai_month_arr = array(
     "00" => "",
@@ -32,13 +32,43 @@ function toThaiDateTimeString($date, $typereturn)
   $time_year = date("Y", $time);
 
   $thai_date_return = $time_day . " " . $thai_month_arr[$time_month] . " " . $time_year;
-  $thai_time_return = date('H:i:s',$time);
+  $thai_time_return = date('H:i:s', $time);
 
-  if($typereturn == "datetime"){
-    $result = $thai_date_return." ".$thai_time_return;
-  }else{
+  if ($typereturn == "datetime") {
+    $result = $thai_date_return . " " . $thai_time_return;
+  } else {
     $result = $thai_date_return;
   }
-  
+
   return $result;
+}
+
+/**
+ * return time
+ *
+ * @param [type] $time = 00:00:00 (H:i:s)
+ * @param string $typereturn = 'H:i','H:i:s'
+ * @return void
+ */
+function toTime($time = null, $typereturn = 'H:i')
+{
+  $result = "";
+
+  if ($time) {
+    $result = date($typereturn, strtotime($time));
+  }
+
+  return $result;
+}
+
+/**
+ * calculate time
+ *
+ * @param [type] $strTime1 = 00:00
+ * @param [type] $strTime2 = 00:00
+ * @return void
+ */
+function TimeDiff($strTime1, $strTime2)
+{
+  return (strtotime($strTime2) - strtotime($strTime1)) /  (60 * 60); // 1 Hour =  60*60
 }

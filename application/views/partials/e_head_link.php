@@ -3,13 +3,16 @@
 
 <link href="<?= base_url('') ?>asset/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
-<link href="<?= base_url('') ?>asset/libs/spinkit/spinkit.css" rel="stylesheet" type="text/css" >
+<link href="<?= base_url('') ?>asset/libs/spinkit/spinkit.css" rel="stylesheet" type="text/css">
 
 <link href="<?= base_url('') ?>asset/plugins/bootstrap4-toggle/css/bootstrap4-toggle.min.css" rel="stylesheet" type="text/css" />
 
 <link href="<?= base_url('') ?>asset/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
 
 <link href="<?= base_url('') ?>asset/libs/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Boostrap select  -->
+<link href="<?= base_url('') ?>asset/libs/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
 
 <!-- App css -->
 <link href="<?= base_url('') ?>asset/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />

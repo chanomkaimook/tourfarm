@@ -17,15 +17,14 @@ $path_script_end = 'application/views/partials/e_script_end.php';
     <!-- Head title -->
     <?php include($path_head_title); ?>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.min.css" rel="stylesheet" media='print'>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
+    <!-- Plugin css -->
+    <link rel="stylesheet" href="<?= base_url('') ?>asset/plugins/jquery/ui/1.13.2/jquery-ui.css">
+    </link>
+    <link href="<?= base_url('') ?>asset/libs/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <!-- Link main -->
+    <?php
+    echo $template['partials']['headlink'];
+    ?>
     <?php include($path_head_link); ?>
 </head>
 
@@ -62,14 +61,18 @@ $path_script_end = 'application/views/partials/e_script_end.php';
 
     <!-- Script Begin -->
     <?php include($path_script_begin); ?>
+    <?php
+    echo $template['partials']['footerscript'];
+    ?>
 
-    <!--  -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <!-- plugin js -->
+    <script src="<?= base_url('') ?>asset/libs/moment/moment.min.js"></script>
+    <!-- <script src="<?= base_url('') ?>asset/libs/jquery-ui/jquery-ui.min.js"></script> -->
+    <script src="<?= base_url('') ?>asset/plugins/jquery/ui/1.13.2/jquery-ui.js"></script>
+    <script src="<?= base_url('') ?>asset/libs/fullcalendar/fullcalendar.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Calendar init -->
+    <script src="<?= base_url('') ?>asset/js/pages/calendar.init.js"></script>
 
     <!-- Script End -->
     <?php include($path_script_end); ?>

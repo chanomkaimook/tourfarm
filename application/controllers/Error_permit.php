@@ -12,7 +12,7 @@ class Error_permit extends MY_Controller
 	{
         // $this->load->view('error_404');
         $this->template->set_layout('lay_main');
-        $this->template->title('ใบลาออนไลน์');	
+        $this->template->title('permittion denied');	
         $this->template->build('error_permit');
     }
 }

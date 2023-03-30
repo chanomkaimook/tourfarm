@@ -12,7 +12,7 @@ class Error_404 extends MY_Controller
 	{
         // $this->load->view('error_404');
         $this->template->set_layout('lay_main');
-        $this->template->title('ใบลาออนไลน์');	
+        $this->template->title('404');	
         $this->template->build('error_404');
     }
 }

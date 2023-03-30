@@ -8,6 +8,9 @@
 
 <script src="<?= base_url('') ?>asset/libs/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
+<!-- Boostrap select  -->
+<script src="<?= base_url('') ?>asset/libs/bootstrap-select/bootstrap-select.min.js"></script>
+
 <!-- <script src="<?= base_url('') ?>asset/js/pages/form-advanced.init.js"></script> -->
 <script>
     $(document).ready(function() {

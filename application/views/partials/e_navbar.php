@@ -4,7 +4,7 @@
                    <li class="dropdown notification-list">
                        <a class="nav-link dropdown-toggle  waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                            <i class="dripicons-bell noti-icon"></i>
-                           <span class="badge badge-pink rounded-circle noti-icon-badge">4</span>
+                           <!-- <span class="badge badge-pink rounded-circle noti-icon-badge">4</span> -->
                        </a>
                        <div class="dropdown-menu dropdown-menu-right dropdown-lg">
 
@@ -95,7 +95,8 @@
 
                    <li class="dropdown notification-list">
                        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                           <img src="<?= base_url('asset/images/users/avatar-1.jpg') ?>" alt="user-image" class="rounded-circle">
+                           <!-- <img src="<?= base_url('asset/images/users/avatar-1.jpg') ?>" alt="user-image" class="rounded-circle"> -->
+                           <img src="<?= base_url('asset/images/users/avatar6@2x.png') ?>" alt="user-image" class="rounded-circle">
                            <span class="pro-user-name ml-1">
                                <?php
                                 echo $this->session->userdata('user_name');
@@ -128,12 +129,21 @@
                </ul>
 
                <!-- LOGO -->
+               <style>
+                   .logo-box {
+                       background-color: #bdc2c5;
+                   }
+
+                   .logo-box span {
+                       color: #FFF
+                   }
+               </style>
                <div class="logo-box">
                    <a href="index.html" class="logo text-center">
                        <span class="logo-lg">
                            <!-- <img src="<?= base_url('asset/images/logo-light.png') ?>" alt="" height="25"> -->
                            <!-- <span class="logo-lg-text-light">E-leave.Chokchai</span> -->
-                           <span style="font-size: 22px;">Backend Stock</span>
+                           <span style="font-size: 22px;">Backend Tour</span>
                        </span>
                        <span class="logo-sm">
                            <!-- <img src="<?= base_url('asset/images/logo-sm.png') ?>" alt="" height="28"> -->
@@ -300,7 +310,7 @@
 
                //
                // data system update
-               updateSystem()
+               /* updateSystem()
 
                function updateSystem() {
                    update_doc_waite()
@@ -320,7 +330,7 @@
                    let result = await fetch(url);
 
                    return result
-               }
+               } */
 
                // return path
                function path(name = null) {

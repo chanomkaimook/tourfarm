@@ -8,7 +8,7 @@
 
                 <ul class="metismenu" id="side-menu">
 
-                    <li class="menu-title">steakhouse</li>
+                    <li class="menu-title">farmchokchai</li>
 
                     <li class="<?= check_permit_menu('dashboard') ?>">
                         <a href="javascript: void(0);">
@@ -23,20 +23,15 @@
 
                     <li class="<?= check_permit_menu('calendar') ?>">
                         <a href="#">
-                            <i class="far fa-calendar-alt"></i>
-                            <span> คลังสินค้า </span>
+                            <i class="fas fa-calendar-alt"></i>
+                            <span> รอบจองเข้าชม </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="<?= site_url('stock/ctl_stock') ?>">คลังสินค้า</a></li>
-                            <li><a href="<?= site_url('stock/ctl_document') ?>">จัดการสินค้า</a></li>
-                            <li><a href="<?= site_url('stock/ctl_document/order') ?>">สั่งสินค้า</a></li>
-                            <li><a href="<?= site_url('stock/ctl_document/documentall') ?>">เอกสาร</a></li>
-                            <li><a href="<?= site_url('stock/ctl_docwaite') ?>">เอกสารที่รอ <span class="badge badge-pink noti-icon-badge total_doc_waite d-none"></span></a></li>
-                            <li><a href="<?= site_url('stock/ctl_item') ?>">สินค้า</a></li>
-                            <li><a href="<?= site_url('stock/ctl_catagory') ?>">ประเภทสินค้า</a></li>
-                            <li><a href="<?= site_url('stock/ctl_node') ?>">ผู้ติดต่อ</a></li>
-                            <li><a href="<?= site_url('stock/ctl_setting/limit') ?>">ตั้งค่า</a></li>
+                            <li><a href="<?= site_url('calendar/ctl_manage') ?>">จัดการรอบ</a></li>
+                            <li><a href="<?= site_url('calendar/ctl_manage/datatable') ?>">ตารางจอง</a></li>
+                            <li><a href="<?= site_url('calendar/ctl_customer') ?>">ลูกค้า</a></li>
+                            <li><a href="<?= site_url('calendar/ctl_round') ?>">รอบเข้าชม</a></li>
                         </ul>
                     </li>
 
@@ -49,7 +44,6 @@
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li><a href="<?= site_url('admin/ctl_register') ?>">ลงทะเบียน</a></li>
                                 <li><a href="<?= site_url('admin/ctl_user') ?>">ผู้ใช้งาน</a></li>
-                                <li><a href="<?= site_url('admin/ctl_nodecatagory') ?>">ประเภทผู้ติดต่อ</a></li>
                             </ul>
                         </li>
 

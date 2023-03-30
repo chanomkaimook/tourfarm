@@ -80,10 +80,69 @@ function delete_file(array $array = [], String $table = null)
     foreach ($array as $key => $value) {
 
       // check path file
-      if(file_exists($value)){
+      if (file_exists($value)) {
         @unlink($value);
       }
-
     }
   }
+}
+
+/**
+ * status alias
+ *
+ * @param String|null $key = item id or key (if key wont to alias)
+ * @param String|null $alias = column status alias
+ * @return void
+ */
+function status_alias(String $key = null, String $alias = null)
+{
+  $ci = &get_instance();
+  $ci->load->database();
+
+  # code...
+  $result = "";
+
+  if ($key) {
+    $sql = $ci->db->select('ID,NAME')
+      ->from('status_alias');
+
+    if ($alias) {
+      $sql->where($alias, $key);
+    } else {
+      $sql->where('id', $key);
+    }
+
+    $count = $sql->count_all_results(null, false);
+    $q = $sql->get();
+    if ($count) {
+      $result = $q->row();
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * query column status alias
+ *
+ * @param String|null $key = item id or key (if key wont to alias)
+ * @param String|null $alias = column status alias
+ * @param string $column = column to show
+ * @return void
+ */
+function get_status_alias(String $key = null, String $alias = null,String $column = "NAME")
+{
+  $ci = &get_instance();
+  $ci->load->database();
+
+  # code...
+  $result = "";
+
+  if ($key) {
+    $sql = (object) status_alias($key,$alias);
+    // print_r($sql);
+    $result = $sql->NAME;
+  }
+
+  return $result;
 }

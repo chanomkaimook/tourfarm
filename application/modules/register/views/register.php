@@ -39,7 +39,7 @@
                                     <div class="account-logo-box">
                                         <div class="text-center">
                                             <h2 class="text-uppercase mb-1">ลงทะเบียนเข้าระบบ</h2>
-                                            <div class="small">ระบบ stock สินค้าร้าน steakhouse</div>
+                                            <div class="small">กรอกแบบฟอร์มเพื่อขอเข้าใช้ระบบ</div>
                                         </div>
                                     </div>
 
@@ -52,8 +52,8 @@
                                                     <select name="role" id="role" class="form-control" required>
                                                         <option value="">ระบุสิทธิ์</option>
                                                         <option value="admin">admin</option>
-                                                        <option value="approve">approve</option>
                                                         <option value="user">user</option>
+                                                        <option value="checker">checker</option>
                                                     </select>
                                                 </div>
                                             </div>

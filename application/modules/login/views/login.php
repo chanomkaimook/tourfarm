@@ -55,8 +55,8 @@ if ($this->session->has_userdata('user_code')) {
                                             </a> -->
                                         </div>
                                         <div class="text-center">
-                                            <h2 class="text-uppercase mb-1  text-center">STOCK ร้านรังสิต</h2>
-                                            <div class="small text-center">ระบบ stock สินค้าร้าน steakhouse</div>
+                                            <h2 class="text-uppercase mb-1  text-center">tour</h2>
+                                            <div class="small text-center">ระบบจองทัวร์เที่ยวชมฟาร์มโชคชัย</div>
                                         </div>
                                     </div>
 
