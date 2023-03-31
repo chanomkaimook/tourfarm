@@ -4,6 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Mdl_register extends CI_Model
 
 {
+    /**
+     * total day for delete user not verify
+     */
+    protected $day_of_delete = 1;
 
     public function __construct()
     {
@@ -18,6 +22,14 @@ class Mdl_register extends CI_Model
             ->get('staff');
 
         return $query->result();
+    }
+
+    public function del_user_less()
+    {
+        # code...
+        $this->db->query("DELETE FROM staff WHERE DATEDIFF(NOW(), DATE_START) > 0 and verify is null and status = $this->day_of_delete;");
+
+        return true;
     }
 
     public function update_verify()

@@ -25,6 +25,8 @@ class Ctl_register extends MY_Controller
 
     public function fetch_data()
     {
+        $check_userless = $this->mdl_register->del_user_less();
+        
         $this->load->helper('my_date');
         $data = $this->mdl_register->get_data_staff();
 
