@@ -96,13 +96,15 @@ class Ctl_register extends MY_Controller
         $sql = $this->db->select('ID')
             ->from('staff')
             ->where('date(date_start) >= (date_add(CURDATE(),INTERVAL 1 day))', null, false)
+            ->where('verify is null',null,false)
             ->get();
-        if ($sql) {
+        $number = $sql->num_rows();
+        if ($number) {
             $this->db->where('date(date_start) >= (date_add(CURDATE(),INTERVAL 1 day))', null, false);
             $this->db->delete('staff');
 
             // keep log
-            log_data(array('delete', 'delete', $this->db->last_query()));
+            log_data(array('clear account', 'delete', $this->db->last_query()));
         }
     }
 }
