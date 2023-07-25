@@ -19,3 +19,4 @@ application/logs/*
 gulpfile.js
 /node_modules/
 /dist/
+/asset/image/
