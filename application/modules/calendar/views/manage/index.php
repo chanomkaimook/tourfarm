@@ -2,8 +2,8 @@
 
     <!-- Start Content-->
     <div class="container-fluid">
-
-        <div class="">
+    <button type="button" class="btn btn-primary btn-sm" onclick="printDiv('myprint')">ปริ้นใบงาน</button>
+        <div id="myprint">
             <div class="card-box">
                 <div class="row">
                     <div class="col-lg-3">
@@ -78,7 +78,39 @@
             min: 1,
             max: 100,
         })
+
+
+
+
+
+       
     })
+    function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML
+            var w = window.open()
+
+            loadContent()
+
+            async function loadContent() {
+
+                let doing1 = await new Promise((resolve, reject) => {
+                    resolve(
+                        w.document.head.innerHTML = document.head.innerHTML,
+                        w.document.body.innerHTML = printContents
+                    )
+                })
+
+                let doing2 = await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(
+                            w.print(),
+                            w.close()
+                        )
+                    }, 100);
+                })
+            }
+
+        }
 </script>
 <?php require_once('script_autocustomer.php') ?>
 <?php require_once('script.php') ?>
