@@ -57,9 +57,10 @@ function App() {
     setDbError('');
     const unsub = firebaseServices.bookingsRef
       .orderBy('date', 'asc')
-      .orderBy('round', 'asc')
       .onSnapshot(snapshot => {
-        const rows = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const rows = snapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => a.date.localeCompare(b.date) || a.round.localeCompare(b.round));
         setBookings(rows);
         setDataReady(true);
       }, err => {
