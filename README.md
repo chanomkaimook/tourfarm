@@ -7,9 +7,11 @@
 1. สร้าง Firebase project
 2. เพิ่ม Web app ใน Project settings
 3. เปิด Authentication > Sign-in method > Email/Password
-4. สร้าง user ใน Authentication > Users
-5. เปิด Firestore Database
-6. Publish rules จากไฟล์ `firestore.rules`
+4. เปิด Authentication > Sign-in method > Google แล้วเลือก Project support email ให้เรียบร้อย
+5. สร้าง user ใน Authentication > Users สำหรับบัญชีแบบ Email/Password
+6. บัญชี Gmail จะถูกสร้างใน Authentication > Users อัตโนมัติหลังผู้ใช้ login ครั้งแรก
+7. เปิด Firestore Database
+8. Publish rules จากไฟล์ `firestore.rules`
 
 ## 2. ใส่ Firebase config
 
@@ -38,6 +40,7 @@ Firebase config ไม่ใช่ secret สำหรับเว็บ fronten
 6. หลัง deploy ให้ copy URL ของ GitHub Pages
 7. ใน Firebase Console ไปที่ Authentication > Settings > Authorized domains
 8. เพิ่ม domain ของ GitHub Pages เช่น `yourname.github.io`
+9. ถ้าใช้ custom domain ให้เพิ่ม domain นั้นด้วย และตอนทดสอบ local ให้คง `localhost` ไว้ใน Authorized domains
 
 ## 4. โครงสร้างข้อมูล Firestore
 
@@ -72,3 +75,4 @@ Document ID ใช้รหัส booking เช่น `B-1234567` หรือ 
 - ถ้าเห็นหน้าบอกว่ายังไม่ได้ตั้งค่า Firebase ให้ตรวจไฟล์ `firebase-config.js`
 - ถ้า login แล้วอ่าน/เขียนข้อมูลไม่ได้ ให้ตรวจ Firestore rules และ Authorized domains
 - ระบบนี้ไม่เปิดสมัครสมาชิกเอง ผู้ดูแลควรสร้าง user ใน Firebase Console
+- ถ้าเปิด Google/Gmail login ตาม rules ปัจจุบัน บัญชี Google ที่ login ผ่าน Firebase ได้จะอ่าน/เขียน booking ได้ทั้งหมด ถ้าต้องการจำกัดเฉพาะทีมงานควรเพิ่ม whitelist ด้วย email, uid หรือ custom claims ใน Firestore rules

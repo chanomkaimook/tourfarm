@@ -46,6 +46,7 @@ window.initFirebaseServices = function initFirebaseServices() {
     }
     if (!firebase.apps.length) firebase.initializeApp(window.FIREBASE_CONFIG);
     const auth = firebase.auth();
+    auth.useDeviceLanguage();
     const db = firebase.firestore();
     return {
       configured: true,

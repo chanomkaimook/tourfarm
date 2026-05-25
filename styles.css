@@ -313,6 +313,44 @@ input, textarea, select { font-family: inherit; font-size: 14px; color: var(--in
   margin-top: 4px;
   padding: 11px 14px;
 }
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.auth-google {
+  width: 100%;
+  justify-content: center;
+  padding: 11px 14px;
+  background: var(--surface);
+}
+.auth-google:hover {
+  background: var(--bg-2);
+}
+.google-mark {
+  width: 20px;
+  height: 20px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #DADCE0;
+  color: #4285F4;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
 
 .sync-banner {
   margin: 16px 32px 0;

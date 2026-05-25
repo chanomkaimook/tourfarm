@@ -25,7 +25,7 @@ function App() {
   const [theme, setTheme] = useStateA(() => localStorage.getItem('fb_theme') || 'light');
   const [authReady, setAuthReady] = useStateA(!firebaseReady);
   const [user, setUser] = useStateA(null);
-  const [authLoading, setAuthLoading] = useStateA(false);
+  const [authLoading, setAuthLoading] = useStateA('');
   const [authError, setAuthError] = useStateA('');
   const [dataReady, setDataReady] = useStateA(!firebaseReady);
   const [dbError, setDbError] = useStateA('');
@@ -88,14 +88,40 @@ function App() {
 
   const login = async (email, password) => {
     if (!firebaseReady) return;
-    setAuthLoading(true);
+    setAuthLoading('email');
     setAuthError('');
     try {
       await firebaseServices.auth.signInWithEmailAndPassword(email, password);
     } catch (err) {
       setAuthError(err.message || 'เข้าสู่ระบบไม่สำเร็จ');
     } finally {
-      setAuthLoading(false);
+      setAuthLoading('');
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    if (!firebaseReady) return;
+    setAuthLoading('google');
+    setAuthError('');
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await firebaseServices.auth.signInWithPopup(provider);
+    } catch (err) {
+      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment'].includes(err.code)) {
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt: 'select_account' });
+          await firebaseServices.auth.signInWithRedirect(provider);
+          return;
+        } catch (redirectErr) {
+          setAuthError(redirectErr.message || 'เข้าสู่ระบบด้วย Gmail ไม่สำเร็จ');
+        }
+      } else if (err.code !== 'auth/popup-closed-by-user') {
+        setAuthError(err.message || 'เข้าสู่ระบบด้วย Gmail ไม่สำเร็จ');
+      }
+    } finally {
+      setAuthLoading('');
     }
   };
 
@@ -253,6 +279,7 @@ function App() {
           loading={authLoading}
           error={authError}
           onLogin={login}
+          onGoogleLogin={loginWithGoogle}
           theme={theme}
           onToggleTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
         />

@@ -100,13 +100,14 @@ function Sidebar({ page, onNavigate, stats, theme, onToggleTheme, user, onSignOu
   );
 }
 
-function AuthScreen({ configured, setupError, loading, error, onLogin, theme, onToggleTheme }) {
+function AuthScreen({ configured, setupError, loading, error, onLogin, onGoogleLogin, theme, onToggleTheme }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const isBusy = Boolean(loading);
 
   const submit = (e) => {
     e.preventDefault();
-    if (!configured || loading) return;
+    if (!configured || isBusy) return;
     onLogin(email.trim(), password);
   };
 
@@ -132,7 +133,7 @@ function AuthScreen({ configured, setupError, loading, error, onLogin, theme, on
 
         <div className="auth-lock"><Icon name="lock" size={22}/></div>
         <h1 className="auth-title">เข้าสู่ระบบ</h1>
-        <p className="auth-subtitle">ใช้บัญชีที่สร้างไว้ใน Firebase Authentication</p>
+        <p className="auth-subtitle">ใช้บัญชีที่สร้างไว้ใน Firebase Authentication หรือ Gmail</p>
 
         {!configured && (
           <div className="auth-alert">
@@ -146,16 +147,23 @@ function AuthScreen({ configured, setupError, loading, error, onLogin, theme, on
         <label className="field auth-field">
           <span className="field-label">Email</span>
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                 placeholder="name@example.com" disabled={!configured || loading} required/>
+                 placeholder="name@example.com" disabled={!configured || isBusy} required/>
         </label>
         <label className="field auth-field">
           <span className="field-label">Password</span>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                 placeholder="••••••••" disabled={!configured || loading} required/>
+                 placeholder="••••••••" disabled={!configured || isBusy} required/>
         </label>
 
-        <button className="btn btn-primary auth-submit" disabled={!configured || loading}>
-          {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+        <button className="btn btn-primary auth-submit" disabled={!configured || isBusy}>
+          {loading === 'email' ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+        </button>
+
+        <div className="auth-divider"><span>หรือ</span></div>
+
+        <button type="button" className="btn auth-google" onClick={onGoogleLogin} disabled={!configured || isBusy}>
+          <span className="google-mark" aria-hidden="true">G</span>
+          {loading === 'google' ? 'กำลังเชื่อมต่อ Gmail...' : 'เข้าสู่ระบบด้วย Gmail'}
         </button>
       </form>
     </div>
