@@ -5,7 +5,7 @@ const { useState: useStateP, useEffect: useEffectP, useMemo: useMemoP } = React;
 // DASHBOARD
 // =============================================================
 function DashboardPage({ bookings, onNavigate, onEdit }) {
-  const today = new Date(2026, 4, 24); // anchor
+  const today = getTodayDate();
   const todayISO = toISO(today);
 
   const stats = useMemoP(() => {
@@ -171,7 +171,7 @@ function DashboardPage({ bookings, onNavigate, onEdit }) {
                     </td>
                     <td><span className="seller-tag">{b.seller}</span></td>
                     <td><PaymentBadge status={b.payment} size="sm"/></td>
-                    <td><button className="icon-btn-sm"><Icon name="edit" size={14}/></button></td>
+                    <td><button className="icon-btn-sm" title="ดูข้อมูล"><Icon name="eye" size={14}/></button></td>
                   </tr>
                 ))}
               </tbody>
@@ -187,12 +187,12 @@ function DashboardPage({ bookings, onNavigate, onEdit }) {
 // CALENDAR
 // =============================================================
 function CalendarPage({ bookings, onCreate, onEdit }) {
-  const [cursor, setCursor] = useStateP(new Date(2026, 4, 1)); // May 2026
+  const [cursor, setCursor] = useStateP(() => getMonthStartDateInAppTimeZone());
   const [selected, setSelected] = useStateP(null);
   const [selectedNewRounds, setSelectedNewRounds] = useStateP([]);
 
   const monthLabel = `${thMonth[cursor.getMonth()]} ${cursor.getFullYear() + 543}`;
-  const todayISO = toISO(new Date(2026, 4, 24));
+  const todayISO = getTodayISO();
 
   // Build month grid
   const grid = useMemoP(() => {
@@ -283,7 +283,7 @@ function CalendarPage({ bookings, onCreate, onEdit }) {
                   <button className="icon-btn" onClick={() => move(-1)}><Icon name="chev_l" size={18}/></button>
                   <div className="month-label">{monthLabel}</div>
                   <button className="icon-btn" onClick={() => move(1)}><Icon name="chev_r" size={18}/></button>
-                  <button className="btn btn-ghost" onClick={() => setCursor(new Date(2026,4,1))}>วันนี้</button>
+                  <button className="btn btn-ghost" onClick={() => setCursor(getMonthStartDateInAppTimeZone())}>วันนี้</button>
                 </div>
               }/>
 
@@ -574,7 +574,7 @@ function ListPage({ bookings, onEdit, onCreate, onExport }) {
               <div className="book-card-right">
                 <PaymentBadge status={b.payment} size="md"/>
                 <button className="btn btn-ghost btn-sm" onClick={(e) => { e.stopPropagation(); onEdit(b); }}>
-                  <Icon name="edit" size={14}/> แก้ไข
+                  <Icon name="eye" size={14}/> ดูข้อมูล
                 </button>
               </div>
             </article>

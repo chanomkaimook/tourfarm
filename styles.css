@@ -937,6 +937,111 @@ input, textarea, select { font-family: inherit; font-size: 14px; color: var(--in
   background: var(--bg-2);
 }
 .foot-right { display: flex; gap: 8px; }
+.booking-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 12px 24px 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.booking-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 700;
+}
+.booking-tab:hover {
+  color: var(--ink);
+  background: var(--bg-2);
+}
+.booking-tab.is-active {
+  color: var(--primary);
+  background: var(--surface);
+  border-color: var(--line);
+  box-shadow: 0 1px 0 var(--surface);
+}
+.booking-view { padding-top: 18px; }
+.booking-view-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0 20px;
+  border-bottom: 1px solid var(--line-2);
+}
+.booking-view-id {
+  font-family: var(--mono);
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 700;
+}
+.booking-view-hero h3 {
+  margin: 4px 0 10px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+.booking-view-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.booking-view-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.booking-view-meta svg { color: var(--ink-3); }
+.detail-section {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-2);
+}
+.detail-section:last-child { border-bottom: none; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+}
+.detail-item {
+  min-width: 0;
+}
+.detail-label {
+  color: var(--ink-3);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.detail-value {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.detail-stations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.detail-empty {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.detail-note {
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
 
 /* ===== Form ===== */
 .form-section { padding: 16px 0; border-bottom: 1px solid var(--line-2); }
@@ -1377,6 +1482,23 @@ html[data-theme="dark"] .bar-list-fill[data-type="government"] { background: #A7
 
   .modal-body {
     padding: 8px 16px 14px;
+  }
+
+  .booking-tabs {
+    padding: 10px 16px 0;
+  }
+
+  .booking-tab {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .booking-view-hero {
+    flex-direction: column;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 
   .modal-foot {

@@ -71,7 +71,7 @@ function App() {
   }, [firebaseReady, user?.uid, firebaseServices]);
 
   // Stats for sidebar (today)
-  const todayISO = toISO(new Date(2026, 4, 24));
+  const todayISO = getTodayISO();
   const sidebarStats = useMemoA(() => {
     const today = bookings.filter(b => b.date === todayISO && b.payment !== 'cancelled');
     return {

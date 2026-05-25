@@ -29,9 +29,37 @@ const STATIONS = [
 ];
 
 // ===== Helpers =====
+const APP_TIME_ZONE = 'Asia/Bangkok';
 const pad = (n) => String(n).padStart(2, '0');
 const toISO = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parseISO = (s) => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+function getDatePartsInTimeZone(date = new Date(), timeZone = APP_TIME_ZONE) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date).reduce((acc, part) => {
+    acc[part.type] = part.value;
+    return acc;
+  }, {});
+  return {
+    year: Number(parts.year),
+    month: Number(parts.month),
+    day: Number(parts.day),
+  };
+}
+function getTodayISO() {
+  const p = getDatePartsInTimeZone();
+  return `${p.year}-${pad(p.month)}-${pad(p.day)}`;
+}
+function getTodayDate() {
+  return parseISO(getTodayISO());
+}
+function getMonthStartDateInAppTimeZone() {
+  const p = getDatePartsInTimeZone();
+  return new Date(p.year, p.month - 1, 1);
+}
 const thMonth = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const thMonthShort = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const thDay = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
@@ -47,7 +75,7 @@ function fmtThaiDateLong(iso) {
 }
 
 // ===== Sample bookings =====
-// Note: today set relative to 2026-05-24 for realistic spread.
+// Note: sample dates are centered around late May 2026 for a realistic spread.
 const SAMPLE_BOOKINGS = [
   {
     id: 'B-2605-001',
@@ -263,6 +291,7 @@ const SAMPLE_BOOKINGS = [
 
 Object.assign(window, {
   TIME_SLOTS, MAX_ROUNDS_PER_DAY, SELLERS, PAYMENT_STATUSES, GROUP_TYPES, STATIONS,
+  APP_TIME_ZONE, getDatePartsInTimeZone, getTodayISO, getTodayDate, getMonthStartDateInAppTimeZone,
   pad, toISO, parseISO, thMonth, thMonthShort, thDay, thDayFull,
   fmtThaiDate, fmtThaiDateLong, SAMPLE_BOOKINGS,
 });

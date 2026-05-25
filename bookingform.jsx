@@ -17,12 +17,14 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
   };
   const [form, setForm] = useStateBF(empty);
   const [errors, setErrors] = useStateBF({});
+  const [activeTab, setActiveTab] = useStateBF('edit');
 
   useEffectBF(() => {
     if (!open) return;
     const nextLockedRounds = lockedRounds.length ? lockedRounds : (lockedRound ? [lockedRound] : []);
     if (initial) setForm({ ...empty, ...initial, rounds: [initial.round] });
     else setForm({ ...empty, date: lockedDate || '', round: nextLockedRounds[0] || '', rounds: nextLockedRounds });
+    setActiveTab(initial ? 'view' : 'edit');
     setErrors({});
   }, [open, initial, lockedDate, lockedRound, lockedRounds.join('|')]);
 
@@ -67,7 +69,6 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
     if (selectedRounds.length === 0) e.round = 'กรุณาเลือกรอบ';
     if (form.groupType === 'school' && !form.schoolSubType) e.schoolSubType = 'เลือกประเภทโรงเรียน';
     if (total <= 0) e.total = 'ระบุจำนวนผู้เข้าชม';
-    if (form.stations.length === 0) e.stations = 'เลือกฐานการบรรยายอย่างน้อย 1 ฐาน';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -88,7 +89,7 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
     <Modal open={open} onClose={onClose} width={960}>
       <div className="modal-head">
         <div>
-          <div className="modal-eyebrow">{isEdit ? 'แก้ไขรายการจอง' : 'จองรอบเข้าชม'}</div>
+          <div className="modal-eyebrow">{isEdit ? 'รายการจองที่บันทึกไว้' : 'จองรอบเข้าชม'}</div>
           <h2 className="modal-title">
             {isEdit ? initial.id : 'รายการจองใหม่'}
             {form.date && <span className="modal-date"> · {fmtThaiDateLong(form.date)}</span>}
@@ -97,6 +98,40 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
         <button className="icon-btn" onClick={onClose}><Icon name="x" size={20} /></button>
       </div>
 
+      {isEdit && (
+        <div className="booking-tabs" role="tablist" aria-label="โหมดรายการจอง">
+          <button type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'view'}
+                  className={`booking-tab ${activeTab === 'view' ? 'is-active' : ''}`}
+                  onClick={() => setActiveTab('view')}>
+            <Icon name="eye" size={16}/> ดูข้อมูล
+          </button>
+          <button type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'edit'}
+                  className={`booking-tab ${activeTab === 'edit' ? 'is-active' : ''}`}
+                  onClick={() => setActiveTab('edit')}>
+            <Icon name="pencil" size={16}/> แก้ไข
+          </button>
+        </div>
+      )}
+
+      {isEdit && activeTab === 'view' ? (
+        <>
+          <BookingDetailView booking={initial} />
+          <div className="modal-foot">
+            <div className="foot-left"></div>
+            <div className="foot-right">
+              <button className="btn btn-ghost" onClick={onClose}>ปิด</button>
+              <button className="btn btn-primary" onClick={() => setActiveTab('edit')}>
+                <Icon name="pencil" size={16}/> แก้ไขรายการ
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
       <div className="modal-body">
         {/* Section 1 — Customer */}
         <section className="form-section">
@@ -234,8 +269,7 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
 
         {/* Section 5 — Stations */}
         <section className="form-section">
-          <h3 className="form-section-title">ฐานการบรรยาย <span className="muted">({form.stations.length}/8)</span></h3>
-          {errors.stations && <div className="field-error">{errors.stations}</div>}
+          <h3 className="form-section-title">ฐานการบรรยาย <span className="muted">ไม่บังคับ · เลือกแล้ว {form.stations.length}/8</span></h3>
           <div className="station-grid">
             {STATIONS.map((name, i) => (
               <label key={i} className={`station-card ${form.stations.includes(i) ? 'is-on' : ''}`}>
@@ -282,7 +316,80 @@ function BookingForm({ open, initial, lockedDate, lockedRound, lockedRounds = []
           </button>
         </div>
       </div>
+        </>
+      )}
     </Modal>
+  );
+}
+
+function BookingDetailView({ booking }) {
+  const total = (Number(booking.adults) || 0) + (Number(booking.kids) || 0);
+  const stations = Array.isArray(booking.stations) ? booking.stations.filter(i => STATIONS[i]) : [];
+
+  return (
+    <div className="modal-body booking-view">
+      <section className="booking-view-hero">
+        <div>
+          <div className="booking-view-id">{booking.id}</div>
+          <h3>{booking.customerName || 'ไม่ระบุชื่อลูกค้า'}</h3>
+          <div className="booking-view-meta">
+            <span><Icon name="calendar" size={14}/> {fmtThaiDateLong(booking.date)}</span>
+            <span><Icon name="clock" size={14}/> {booking.round}</span>
+            <span><Icon name="users" size={14}/> {total} คน</span>
+          </div>
+        </div>
+        <PaymentBadge status={booking.payment} size="md"/>
+      </section>
+
+      <section className="detail-section">
+        <h3 className="form-section-title">ข้อมูลการจอง</h3>
+        <div className="detail-grid">
+          <DetailItem label="ประเภทกรุ๊ป">
+            <GroupChip type={booking.groupType} sub={booking.schoolSubType}/>
+          </DetailItem>
+          <DetailItem label="ผู้ขาย">{booking.seller || '-'}</DetailItem>
+          <DetailItem label="ผู้ใหญ่">{booking.adults || 0} คน</DetailItem>
+          <DetailItem label="เด็ก">{booking.kids || 0} คน</DetailItem>
+        </div>
+      </section>
+
+      <section className="detail-section">
+        <h3 className="form-section-title">ข้อมูลติดต่อ</h3>
+        <div className="detail-grid">
+          <DetailItem label="ผู้ประสานงาน">{booking.contactName || '-'}</DetailItem>
+          <DetailItem label="เบอร์ติดต่อ">{booking.contactPhone || '-'}</DetailItem>
+          <DetailItem label="Tax ID">{booking.taxId || '-'}</DetailItem>
+          <DetailItem label="ที่อยู่">{booking.address || '-'}</DetailItem>
+        </div>
+      </section>
+
+      <section className="detail-section">
+        <h3 className="form-section-title">ฐานการบรรยาย</h3>
+        {stations.length ? (
+          <div className="detail-stations">
+            {stations.map(i => (
+              <span key={i} className="station-tag">{i + 1}. {STATIONS[i]}</span>
+            ))}
+          </div>
+        ) : (
+          <div className="detail-empty">ไม่ได้เลือกฐานการบรรยาย</div>
+        )}
+      </section>
+
+      <section className="detail-section">
+        <h3 className="form-section-title">หมายเหตุ</h3>
+        <div className="detail-note">{booking.note || 'ไม่มีหมายเหตุ'}</div>
+      </section>
+    </div>
+  );
+}
+
+function DetailItem({ label, children }) {
+  return (
+    <div className="detail-item">
+      <div className="detail-label">{label}</div>
+      <div className="detail-value">{children}</div>
+    </div>
   );
 }
 
